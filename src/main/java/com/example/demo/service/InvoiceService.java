@@ -4,6 +4,7 @@ import com.example.demo.model.Invoice;
 import com.example.demo.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,16 +15,31 @@ public class InvoiceService {
     @Autowired
     private InvoiceRepository invoiceRepository;
 
+    @Autowired
+    private StatisticsService statisticsService;
+
     public List<Invoice> getAllInvoices() {
         return invoiceRepository.findAll();
     }
 
+    @Transactional
     public Invoice saveInvoice(Invoice invoice) {
-        return invoiceRepository.save(invoice);
+        boolean isNew = invoice.getId() == null;
+        Invoice savedInvoice = invoiceRepository.save(invoice);
+
+        if (isNew) {
+            statisticsService.recordEvent("INVOICES", "ADD");
+        } else {
+            statisticsService.recordEvent("INVOICES", "UPDATE");
+        }
+
+        return savedInvoice;
     }
 
+    @Transactional
     public void deleteInvoice(Long id) {
         invoiceRepository.deleteById(id);
+        statisticsService.recordEvent("INVOICES", "DELETE");
     }
 
     public Invoice getInvoiceById(Long id) {
