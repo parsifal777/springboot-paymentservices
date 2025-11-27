@@ -53,4 +53,20 @@ public class InvoiceService {
     public List<Invoice> findByPeriod(LocalDate period) {
         return invoiceRepository.findByPeriod(period);
     }
+
+    public List<Invoice> findByResidentName(String residentName) {
+        return invoiceRepository.findByResidentName(residentName);
+    }
+
+    public List<Invoice> findByResidentIdAndPeriod(Long residentId, LocalDate period) {
+        return invoiceRepository.findByResidentIdAndPeriod(residentId, period);
+    }
+
+    public List<Invoice> findByResidentNameAndAmountGreaterThan(String residentName, Double minAmount) {
+        return invoiceRepository.findByResidentNameAndAmountGreaterThan(residentName, minAmount);
+    }
+
+    public boolean hasInvoicesForResident(Long residentId) {
+        return !invoiceRepository.findByResidentId(residentId).isEmpty();
+    }
 }

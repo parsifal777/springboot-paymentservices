@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDateTime;
 
 @Service
 public class PaymentService {
@@ -33,4 +34,17 @@ public class PaymentService {
     public List<Payment> getPaymentsByResidentId(Long residentId) {
         return paymentRepository.findByResidentId(residentId);
     }
+
+    public List<Payment> findByResidentName(String residentName) {
+        return paymentRepository.findByResidentName(residentName);
+    }
+
+    public List<Payment> findByPaymentDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
+        return paymentRepository.findByPaymentDateBetween(startDate, endDate);
+    }
+
+    public List<Payment> findByResidentNameAndAmountGreaterThanEqual(String residentName, Double minAmount) {
+        return paymentRepository.findByResidentNameAndAmountGreaterThanEqual(residentName, minAmount);
+    }
+
 }

@@ -48,4 +48,12 @@ public class ResidentService {
     public List<Resident> findByFullNameContaining(String name) {
         return residentRepository.findByFullNameContainingIgnoreCase(name);
     }
+
+    public List<Resident> findByNameContaining(String name) {
+        return residentRepository.findAllByNameContaining(name);
+    }
+
+    public List<Resident> findByNameAndAddress(String name, String address) {
+        return residentRepository.findByNameAndAddress(name, address);
+    }
 }
